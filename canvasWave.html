@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas之三角函数</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        canvas{
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+<canvas></canvas>
+
+<script src="canvas-wave.js"></script>
+<script>
+    const Canvas = {
+        ctx: null,
+        width: 0,
+        height: 0,
+        init(){
+            let canvasEl = document.body.querySelector('canvas');
+            this.width = canvasEl.width = window.innerWidth;
+            this.height = canvasEl.height = window.innerHeight;
+
+            this.ctx = canvasEl.getContext('2d');
+        },
+        animate(callback){
+            this.clearRect();
+            callback();
+            window.requestAnimationFrame(() => {
+                this.animate(callback);
+            });
+
+        },
+        clearRect(){
+            this.ctx.clearRect(0, 0, this.width, this.height);
+        }
+    };
+
+
+    Canvas.init();
+
+    let waveArr = [];
+    waveArr.push(new Wave({
+        ctx: Canvas.ctx,
+        startCoordinate: {
+            x: 0,
+            y: Canvas.height / 2,
+        },
+        endCoordinate: {
+            x: Canvas.width,
+            y: Canvas.height,
+        },
+        linearGradientStartColor: "rgba(0, 191, 255, 1)", //"#87CEEB",
+        linearGradientEndColor: "rgba(30, 144, 255, 0.9)" //"#2E8B57"
+    }),
+        new Wave({
+        ctx: Canvas.ctx,
+        startCoordinate: {
+            x: 0,
+            y: Canvas.height / 2,
+        },
+        endCoordinate: {
+            x: Canvas.width,
+            y: Canvas.height,
+        },
+        speed: 0.01,
+        amplitude: 20,
+        period: 2,
+        horizontalDisplacement: Canvas.width / 3,
+        verticalDisplacement: Canvas.height / 2,
+        linearGradientStartColor: "rgba(30, 144, 255, 0.9)", //"#87CEEB"
+        linearGradientEndColor: "rgba(0, 191, 255, 1)" //"#2E8B57"
+    }));
+
+    Canvas.animate(() => {
+        waveArr.forEach((wave) => {
+            wave.draw();
+        })
+    });
+
+</script>
+</body>
+</html>
